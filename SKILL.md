@@ -34,6 +34,20 @@ description: Fast, accurate TickTick operations via the installed ticktick CLI �
 6. **`complete` دو پارامتر می‌خواهد**: `ticktick task complete <projectId> <taskId>` — اول از filter/search بگیر.
 7. یادآور سرِ ساعت دقیق (تسک زمان‌دار) = `--reminders "TRIGGER:PT0S"`؛ هم‌روزه = `"TRIGGER:P0D"`.
 8. اولویت: `--priority 0=هیچ 1=کم 3=متوسط 5=زیاد`.
+9. **جابجایی تسک بین پروژه‌ها خراب است** — `task update <id> --id <id> --project <other>` در v0.1.14 خطای «Cannot read properties of undefined (reading 'title')» می‌دهد (تست‌شده، همهٔ تسک‌ها). پس تسک را **از همان اول در پروژهٔ درست بساز**؛ جابجایی فقط از اپ موبایل.
+10. `project create` و `tag create` کار می‌کنند (برخلاف `project list` که همیشه خالی است) — تأیید ساخت = خودِ JSON پاسخ؛ برای تگ فارسی `--name` و `--label` را یکسان بده.
+
+## 🗂 ساختار دائمی کاربر (۲۰۲۶-۰۹-۲۶ ساخته شد — تسک را همیشه در پروژهٔ درست بساز)
+
+| پروژه | ID | کاربرد |
+|---|---|---|
+| Inbox | `inbox118995266` | فقط ورودیِ دم‌دست؛ در مرور جمعه تخلیه شود |
+| مناقصات ستاد | `6ab80cbb8f086a6e16999664` | آگهی‌ها، مهلت‌ها، پیگیری اسناد |
+| پیمان‌ها و قراردادها | `6ab80cbc8f08f1c96f4e053e` | کارفرما/پیمانکار، صورت وضعیت، نامه‌ها |
+| اداری و مالی | `6ab80cbe8f08d994cf727cd2` | بیمه، مالیات، کاتب، ثبت‌نام‌ها |
+| شخصی و خانواده | `6ab80cc08f08717709490583` | تولدها، خانه، شخصی |
+
+تگ‌های آماده: `کرج` `فردیس` `قدس` `نظرآباد` (شهر) · `مهلت` `تماس` `پیگیری` (نوع). تگ جدید = `ticktick tag create --name "X" --label "X" --json`.
 
 ## ⚡ رسپی‌های یک‌خطی (کپی-پیست)
 
@@ -70,7 +84,9 @@ node ~/.agents/skills/ticktick/week-list.mjs 14   # ۱۴ روز پیش‌رو
 task filter --json        # همه؛ فیلتر: --status 0=open,2=completed --priority --tag --start-date --end-date
 task search "کلمه" --json # جستجو؛ --status --due-from --due-to
 task create / update <taskId> / complete <projectId> <taskId> / delete <projectId> <taskId> / completed --json
-habit list | focus ... | tag ... | countdown   # بقیهٔ امکانات
+project create --name --color --json | project get/update/delete <id> | project data <id>   # ساخت پروژه کار می‌کند؛ project list همیشه خالی
+tag create --name --label --json | tag list / rename / delete                               # تگ فارسی: name=label
+habit list | focus ... | countdown   # بقیهٔ امکانات
 ```
 
 عنوان فارسی آزاد است (یونیکد در آرگومان مشکلی ندارد).
